@@ -102,8 +102,11 @@ public class Ninja implements KeyboardHandler {
 
     public void move() {
 
-        this.x = 0;
-        this.y = - speed;
+        if(ninja.getY() > 10) {
+
+            ninja.translate(0, -speed);
+
+        }
 
     }
 
@@ -112,8 +115,10 @@ public class Ninja implements KeyboardHandler {
 
         if (keyboardEvent.getKey() == keyboardEvent.KEY_UP) {
 
-            ninja.translate(0, -speed);
+            move();
+
         }
+
     }
 
     @Override
