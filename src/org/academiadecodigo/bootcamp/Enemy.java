@@ -4,7 +4,6 @@ public class Enemy extends GameObjects {
 
 
     @Override
-    public boolean move() {
-        return false;
+    public void move() {
     }
 }
