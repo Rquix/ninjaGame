@@ -7,7 +7,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 /**
  * Created by codecadet on 19/10/2018.
  */
-public class PicturedBinaryObject extends BinaryObject {
+public class PicturedBinaryObject extends BinaryObject implements Drawable {
 
     private PicturedCell picturedCell;
 
@@ -19,10 +19,11 @@ public class PicturedBinaryObject extends BinaryObject {
     @Override
     public void changeState() {
         super.changeState();
-        drawObject();
+        drawItState();
     }
 
-    public void drawObject() {
+    @Override
+    public void drawItState() {
         picturedCell.draw(isPositiveState());
     }
 

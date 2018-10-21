@@ -1,5 +1,7 @@
 package org.academiadecodigo.bootcamp.easterEGG;
 
+import org.academiadecodigo.simplegraphics.graphics.Text;
+
 /**
  * Created by codecadet on 19/10/2018.
  */
@@ -9,7 +11,7 @@ public class Grid extends AbstractGrid {
     private final int INNER_CELL_SIZE = 20;
     private Cursor cursor;
     private CircleBinaryObject[][] circleBinaryObjects;
-
+    private Text stateOfGameDisplay;
 
     public Grid(int width, int height) {
         super(width, height);
@@ -21,9 +23,12 @@ public class Grid extends AbstractGrid {
                 this.circleBinaryObjects[i][j] = new CircleBinaryObject(i,j,getAbstractGrid()[i][j],GRID_PADDING,CELL_PADDING,INNER_CELL_SIZE);
             }
         }
+        this.stateOfGameDisplay = new Text(2*CELL_PADDING,CELL_PADDING + (2*CELL_PADDING+INNER_CELL_SIZE)*getHeight(),stateOfGameMsg());
     }
 
+    //private BinaryObject[][]
 
+/*
     public void drawGrid() {
         for (CircleBinaryObject[] colunnOfCells: circleBinaryObjects) {
             for (CircleBinaryObject cell: colunnOfCells) {
@@ -31,13 +36,18 @@ public class Grid extends AbstractGrid {
             }
         }
     }
-
-    public void drawStates() {
+*/
+    public void drawGrid() {
         for (CircleBinaryObject[] colunnOfCells: circleBinaryObjects) {
             for (CircleBinaryObject cell: colunnOfCells) {
                 cell.drawItState();
             }
         }
+    }
+
+    @Override
+    public void start() {
+        super.start();
     }
 
 
@@ -48,12 +58,19 @@ public class Grid extends AbstractGrid {
         cursor.draw();
     }
 
+    @Override
+    public void showStateOfGameMsg() {
+        super.showStateOfGameMsg();
+        stateOfGameDisplay.setText(stateOfGameMsg());
+        //Text stateOfGameDisplay = new Text(2*CELL_PADDING,CELL_PADDING + (2*CELL_PADDING+INNER_CELL_SIZE)*getHeight(),stateOfGameMsg());
+        stateOfGameDisplay.draw();
+    }
 
     @Override
     protected boolean moveCursorRight() {
         if (super.moveCursorRight()) {
             cursor.moveRight();
-            drawStates();
+            drawGrid();
             return true;
         }
         return false;
@@ -63,7 +80,7 @@ public class Grid extends AbstractGrid {
     protected boolean moveCursorLeft() {
         if (super.moveCursorLeft()) {
             cursor.moveLeft();
-            drawStates();
+            drawGrid();
             return true;
         }
         return false;
@@ -73,7 +90,7 @@ public class Grid extends AbstractGrid {
     protected boolean moveCursorDown() {
         if (super.moveCursorDown()) {
             cursor.moveDown();
-            drawStates();
+            drawGrid();
             return true;
         }
         return false;
@@ -83,7 +100,7 @@ public class Grid extends AbstractGrid {
     protected boolean moveCursorUp() {
         if (super.moveCursorUp()) {
             cursor.moveUp();
-            drawStates();
+            drawGrid();
             return true;
         }
         return false;

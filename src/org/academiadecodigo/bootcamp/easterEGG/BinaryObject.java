@@ -3,7 +3,7 @@ package org.academiadecodigo.bootcamp.easterEGG;
 /**
  * Created by codecadet on 19/10/2018.
  */
-public abstract class BinaryObject {
+public /*abstract*/ class BinaryObject {
 
     //Properties
     private int colunn;

@@ -3,7 +3,7 @@ package org.academiadecodigo.bootcamp.easterEGG;
 /**
  * Created by codecadet on 20/10/2018.
  */
-public class CircleBinaryObject extends BinaryObject {
+public class CircleBinaryObject extends BinaryObject implements Drawable {
 
     private CircleCell circleCell;
 
@@ -12,13 +12,16 @@ public class CircleBinaryObject extends BinaryObject {
         this.circleCell = new CircleCell(colunn,row,padding,cellPadding,circleSize);
     }
 
-
+/*
     protected void draw() {
         circleCell.getCell().draw();
         this.drawItState();
     }
+*/
 
-    protected void drawItState () {
+    @Override
+    public void drawItState () {
+        circleCell.getCell().draw();
         if (isPositiveState()) {
             circleCell.getCircle().fill();
             return;

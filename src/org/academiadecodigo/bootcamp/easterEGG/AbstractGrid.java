@@ -5,6 +5,8 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
+import java.awt.*;
+
 /**
  * Created by codecadet on 20/10/2018.
  */
@@ -14,6 +16,7 @@ public class AbstractGrid implements KeyboardHandler{
     private int height;
     private boolean[][] abstractGrid;
     private AbstractCursor abstractCursor;
+    private int numberOfSwitchPresses;
 
 
     public AbstractGrid(int width, int height) {
@@ -21,6 +24,7 @@ public class AbstractGrid implements KeyboardHandler{
         this.height = height;
         this.abstractCursor = new AbstractCursor(0,0);
         this.abstractGrid = produceRandomGrid();
+        this.numberOfSwitchPresses = 0;
     }
 
     private boolean[][] produceRandomGrid() {
@@ -35,6 +39,7 @@ public class AbstractGrid implements KeyboardHandler{
     }
 
     public void start(){
+
         Keyboard keyboard = new Keyboard(this);
 
         KeyboardEvent left = new KeyboardEvent();
@@ -69,12 +74,64 @@ public class AbstractGrid implements KeyboardHandler{
 
         this.init();
 
+        while (!sucessCondition()) {
+
+        }
+
+        return;
+
+
 
     }
+
+
+
+
 
     protected void init() {
         System.out.println(this);
+        showStateOfGameMsg();
     }
+
+    //To simplify after create sucessDistance method
+    protected boolean sucessCondition () {
+        return (sucessDistance() == 0);
+        /*
+        boolean output = false;
+        for (boolean[] row: abstractGrid) {
+            for (boolean cellValue : row) {
+                output = output || cellValue;
+            }
+        }
+        return output;
+        */
+    }
+
+    protected int sucessDistance () {
+        int output = 0;
+        for (int i=0; i < width; i++) {
+            for (int j=0; j < height; j++) {
+                if (toPressCell(i,j)) {
+                    output++;
+                }
+            }
+        }
+        return output;
+    }
+
+    protected boolean toPressCell (int colunn, int row) {
+        boolean output = false;
+        for (int i = 0; i < width ; i++) {
+            output = (output & !abstractGrid[i][row]) | (!output & abstractGrid[i][row]);
+        }
+        for (int j = 0; j < height ; j++) {
+            if (j!=row) {
+                output = (output & !abstractGrid[colunn][j]) | (!output & abstractGrid[colunn][j]);
+            }
+        }
+        return output;
+    }
+
 
     protected boolean moveCursorRight() {
         if (abstractCursor.getColunn() < width-1) {
@@ -119,9 +176,19 @@ public class AbstractGrid implements KeyboardHandler{
                 abstractGrid[colunn][j] = !abstractGrid[colunn][j];
             }
         }
-
     }
 
+    public void showStateOfGameMsg() {
+        System.out.println(stateOfGameMsg());
+    }
+
+    public String stateOfGameMsg() {
+        String msg = "You have'd made " + numberOfSwitchPresses + " changes and have at least " + sucessDistance() + " to do.";
+        if(sucessCondition()) {
+            msg = "Congratulations! You win!!";
+        }
+        return msg;
+    }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
@@ -144,7 +211,9 @@ public class AbstractGrid implements KeyboardHandler{
                 break;
             case KeyboardEvent.KEY_P:
                 changeStateOfCells();
+                numberOfSwitchPresses++;
                 System.out.println(this);
+                showStateOfGameMsg();
                 break;
             default:
                 System.out.println("We have a problem");
@@ -152,10 +221,28 @@ public class AbstractGrid implements KeyboardHandler{
     }
 
     @Override
-    public void keyReleased(KeyboardEvent keyboardEvent) {
+    public void keyReleased(KeyboardEvent keyboardEvent) {}
 
+    //Getters and Setters
+    public int getWidth() {
+        return width;
     }
 
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean[][] getAbstractGrid() {
+        return abstractGrid;
+    }
+
+    public AbstractCursor getAbstractCursor() {
+        return abstractCursor;
+    }
+
+
+    //ToString method
     @Override
     public String toString() {
         String output = "";
@@ -170,23 +257,4 @@ public class AbstractGrid implements KeyboardHandler{
         return output;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public boolean[][] getAbstractGrid() {
-        return abstractGrid;
-    }
-
-    public AbstractCursor getAbstractCursor() {
-        return abstractCursor;
-    }
-
-    public void setAbstractCursor(AbstractCursor abstractCursor) {
-        this.abstractCursor = abstractCursor;
-    }
 }
