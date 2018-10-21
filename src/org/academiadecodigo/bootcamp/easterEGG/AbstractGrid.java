@@ -1,16 +1,10 @@
 package org.academiadecodigo.bootcamp.easterEGG;
 
-import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
-
-import java.awt.*;
 
 /**
  * Created by codecadet on 20/10/2018.
  */
-public class AbstractGrid implements KeyboardHandler{
+public class AbstractGrid {
 
     private int width;
     private int height;
@@ -27,84 +21,37 @@ public class AbstractGrid implements KeyboardHandler{
         this.numberOfSwitchPresses = 0;
     }
 
+
+
     private boolean[][] produceRandomGrid() {
 
         boolean[][] output = new boolean[width][height];
+        boolean playableOutput = false;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 output[i][j] = (Math.random()<0.2);
+                playableOutput |= output[i][j];
             }
+        }
+        if(!playableOutput) {
+            output = produceRandomGrid();
         }
         return output;
     }
 
-    public void start(){
-
-        Keyboard keyboard = new Keyboard(this);
-
-        KeyboardEvent left = new KeyboardEvent();
-        left.setKey(KeyboardEvent.KEY_LEFT);
-        left.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(left);
-
-        KeyboardEvent right = new KeyboardEvent();
-        right.setKey(KeyboardEvent.KEY_RIGHT);
-        right.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(right);
-
-        KeyboardEvent down = new KeyboardEvent();
-        down.setKey(KeyboardEvent.KEY_DOWN);
-        down.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(down);
-
-        KeyboardEvent up = new KeyboardEvent();
-        up.setKey(KeyboardEvent.KEY_UP);
-        up.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(up);
-
-        KeyboardEvent paint = new KeyboardEvent();
-        paint.setKey(KeyboardEvent.KEY_P);
-        paint.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(paint);
-
-        KeyboardEvent save = new KeyboardEvent();
-        save.setKey(KeyboardEvent.KEY_S);
-        save.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(save);
-
-        this.init();
-
-        while (!sucessCondition()) {
-
-        }
-
-        return;
 
 
-
+    protected void increaseNumberOfSwitchPresses () {
+        numberOfSwitchPresses++;
     }
-
-
-
-
 
     protected void init() {
         System.out.println(this);
         showStateOfGameMsg();
     }
 
-    //To simplify after create sucessDistance method
     protected boolean sucessCondition () {
         return (sucessDistance() == 0);
-        /*
-        boolean output = false;
-        for (boolean[] row: abstractGrid) {
-            for (boolean cellValue : row) {
-                output = output || cellValue;
-            }
-        }
-        return output;
-        */
     }
 
     protected int sucessDistance () {
@@ -189,39 +136,6 @@ public class AbstractGrid implements KeyboardHandler{
         }
         return msg;
     }
-
-    @Override
-    public void keyPressed(KeyboardEvent keyboardEvent) {
-        switch (keyboardEvent.getKey()) {
-            case KeyboardEvent.KEY_LEFT:
-                moveCursorLeft();
-                System.out.println(this);
-                break;
-            case KeyboardEvent.KEY_RIGHT:
-                moveCursorRight();
-                System.out.println(this);
-                break;
-            case KeyboardEvent.KEY_DOWN:
-                moveCursorDown();
-                System.out.println(this);
-                break;
-            case KeyboardEvent.KEY_UP:
-                moveCursorUp();
-                System.out.println(this);
-                break;
-            case KeyboardEvent.KEY_P:
-                changeStateOfCells();
-                numberOfSwitchPresses++;
-                System.out.println(this);
-                showStateOfGameMsg();
-                break;
-            default:
-                System.out.println("We have a problem");
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyboardEvent keyboardEvent) {}
 
     //Getters and Setters
     public int getWidth() {

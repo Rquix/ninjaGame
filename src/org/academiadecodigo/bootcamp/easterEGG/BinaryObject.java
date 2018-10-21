@@ -3,7 +3,7 @@ package org.academiadecodigo.bootcamp.easterEGG;
 /**
  * Created by codecadet on 19/10/2018.
  */
-public /*abstract*/ class BinaryObject {
+public abstract class BinaryObject {
 
     //Properties
     private int colunn;
@@ -21,6 +21,8 @@ public /*abstract*/ class BinaryObject {
     protected void changeState() {
         positiveState = !positiveState;
     }
+
+    public abstract void drawItState();
 
     //Getters & Setters
 

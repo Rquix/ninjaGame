@@ -8,8 +8,8 @@ public class EasterEggMain {
 
         //AbstractGrid abstractGrid = new AbstractGrid(4,4);
         //abstractGrid.start();
-        Grid grid = new Grid(4,4);
-        grid.start();
+        Game game = new Game();
+        game.run();
 
 
     }

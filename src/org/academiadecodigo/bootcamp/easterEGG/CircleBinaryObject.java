@@ -12,12 +12,6 @@ public class CircleBinaryObject extends BinaryObject implements Drawable {
         this.circleCell = new CircleCell(colunn,row,padding,cellPadding,circleSize);
     }
 
-/*
-    protected void draw() {
-        circleCell.getCell().draw();
-        this.drawItState();
-    }
-*/
 
     @Override
     public void drawItState () {
