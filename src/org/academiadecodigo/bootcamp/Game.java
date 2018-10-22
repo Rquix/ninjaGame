@@ -1,40 +1,181 @@
-package org.academiadecodigo.bootcamp;
+package org.academiadecodigo.bootcamp.easterEGG;
 
-import org.academiadecodigo.simplegraphics.graphics.Color;
+import org.academiadecodigo.simplegraphics.graphics.Text;
+import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
-public class Game {
+/**
+ * Created by codecadet on 21/10/2018.
+ */
+public class Game implements KeyboardHandler {
 
-    private Player player;
     private Grid grid;
-    private GameObjects[] enemies;
-    private int score, playerHealth, maxY;
-    private float speed;
+    private boolean gameStarted = false;
+    private Text rules1 = new Text(30,30,"Use the arrows to move the cursor");
+    private Text rules2 = new Text(30,50,"Press SPACE to switch the colors of the cells in cursor row and colunn");
+    private Text rules3 = new Text(30,70,"You win when all cells are white (press n to continue)");
+    private Text menu = new Text(30,30,"Choose the dificulty: Easy (press e), Medium (press m) or Hard (press h)");
+    private boolean game = false, isgamming =false;
 
-    Game() {
-        maxY = 260;
-        speed = 0.00002f;
+
+    public void run () {
+        showRules();
+
+    }
+
+
+    public void init() {
+
+        rules1.delete();
+        rules2.delete();
+        rules3.delete();
+
+        Keyboard keyboard = new Keyboard(this);
+
+        KeyboardEvent chooseEasy = new KeyboardEvent();
+        chooseEasy.setKey(KeyboardEvent.KEY_E);
+        chooseEasy.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(chooseEasy);
+
+        KeyboardEvent chooseMedium = new KeyboardEvent();
+        chooseMedium.setKey(KeyboardEvent.KEY_M);
+        chooseMedium.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(chooseMedium);
+
+        KeyboardEvent chooseHard = new KeyboardEvent();
+        chooseHard.setKey(KeyboardEvent.KEY_H);
+        chooseHard.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(chooseHard);
+
+
+        menu.draw();
+        game = true;
+    }
+
+    public void showRules() {
+
+        rules1.draw();
+        rules2.draw();
+        rules3.draw();
+
+        Keyboard keyboard = new Keyboard(this);
+
+        KeyboardEvent next = new KeyboardEvent();
+        next.setKey(KeyboardEvent.KEY_N);
+        next.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(next);
+
+
+    }
+
+
+    public void start(){
+
+        menu.delete();
+
+        Keyboard keyboard = new Keyboard(this);
+
+        KeyboardEvent left = new KeyboardEvent();
+        left.setKey(KeyboardEvent.KEY_LEFT);
+        left.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(left);
+
+        KeyboardEvent right = new KeyboardEvent();
+        right.setKey(KeyboardEvent.KEY_RIGHT);
+        right.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(right);
+
+        KeyboardEvent down = new KeyboardEvent();
+        down.setKey(KeyboardEvent.KEY_DOWN);
+        down.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(down);
+
+        KeyboardEvent up = new KeyboardEvent();
+        up.setKey(KeyboardEvent.KEY_UP);
+        up.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(up);
+
+        KeyboardEvent switchPress = new KeyboardEvent();
+        switchPress.setKey(KeyboardEvent.KEY_SPACE);
+        switchPress.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(switchPress);
+
+        grid.init();
 
 
 
     }
 
-    public void start (){
-        grid = new Grid(500, 500, 10);
-        player = new Player(200, 20, 20, 20, 100);
-        player.playerInit(Color.BLACK);
 
-        while (true){
-            speed = (player.getY()<maxY && !player.getMoving()) ? 0.00002f : 0;
-            if (player.getY()==maxY) player.jump=0;
-            player.setY(speed);
+    @Override
+    public void keyPressed(KeyboardEvent keyboardEvent) {
+        switch (keyboardEvent.getKey()) {
+            case KeyboardEvent.KEY_LEFT:
+                    grid.moveCursorLeft();
+                    System.out.println(grid);
+                break;
+            case KeyboardEvent.KEY_RIGHT:
+                    grid.moveCursorRight();
+                    System.out.println(grid);
+                break;
+            case KeyboardEvent.KEY_DOWN:
+                    grid.moveCursorDown();
+                    System.out.println(grid);
+                break;
+            case KeyboardEvent.KEY_UP:
+                    grid.moveCursorUp();
+                    System.out.println(grid);
+                break;
+            case KeyboardEvent.KEY_SPACE:
+                if (!grid.sucessCondition()) {
+                    grid.changeStateOfCells();
+                    grid.increaseNumberOfSwitchPresses();
+                    System.out.println(grid);
+                    grid.showStateOfGameMsg();
+                }
+                break;
+            case KeyboardEvent.KEY_E:
+                if(!isgamming) {
+                    grid = new Grid(2, 2);
+                    gameStarted = true;
+                    start();
+                    isgamming = true;
+                }
+                break;
+            case KeyboardEvent.KEY_M:
+                if(!isgamming) {
+                    grid = new Grid(4, 4);
+                    gameStarted = true;
+                    start();
+                    isgamming = true;
+                }
+                break;
+            case KeyboardEvent.KEY_H:
+                if(!isgamming) {
+                    grid = new Grid(6, 6);
+                    gameStarted = true;
+                    start();
+                    isgamming = true;
+                }
+                break;
+
+            case KeyboardEvent.KEY_N:
+                if (!game) {
+                    init();
+                }
+
+                break;
+
+
+            default:
+                System.out.println("We have a problem");
         }
-
     }
 
-    public void init(){
-
-    }
-
+    @Override
+    public void keyReleased(KeyboardEvent keyboardEvent) {}
 
 
 }

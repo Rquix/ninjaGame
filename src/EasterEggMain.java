@@ -1,7 +1,8 @@
-package org.academiadecodigo.bootcamp.easterEGG;
+package org.academiadecodigo.bootcamp;
 
 /**
  * Created by codecadet on 19/10/2018.
+ * Run the game.
  */
 public class EasterEggMain {
     public static void main(String[] args) {

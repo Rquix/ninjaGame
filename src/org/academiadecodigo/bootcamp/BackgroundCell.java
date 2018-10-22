@@ -5,6 +5,7 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 /**
  * Created by codecadet on 19/10/2018.
+ * Defines the background cell common to cursor, circle binary object
  */
 public class BackgroundCell {
     private int colunn;

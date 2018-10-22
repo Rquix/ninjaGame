@@ -2,6 +2,7 @@ package org.academiadecodigo.bootcamp.easterEGG;
 
 /**
  * Created by codecadet on 19/10/2018.
+ * Defines an abstract cursor to move in the abstract grid.
  */
 public class AbstractCursor {
 

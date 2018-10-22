@@ -3,6 +3,7 @@ package org.academiadecodigo.bootcamp.easterEGG;
 
 /**
  * Created by codecadet on 20/10/2018.
+ * Defines an abstract grid to be printed in terminal and blue print the class grid.
  */
 public class AbstractGrid {
 
